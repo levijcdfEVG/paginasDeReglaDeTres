@@ -80,15 +80,31 @@
 </div>
 
 <script>
-    //Funcion para ejecutar la conversion
+    // Función para validar los valores
+    function validarValores(valorP, valorParcial) {
+        // Validar si los valores son números
+        if (isNaN(valorP) || isNaN(valorParcial)) {
+            document.getElementById('resultado').innerText = "Por favor, ingresa valores válidos.";
+            return false;
+        }
+
+        // Validación de mayor valor
+        if (valorParcial > valorP) {
+            document.getElementById('resultado').innerText = "No hagas una operación con píxeles parciales superiores al total.";
+            return false;
+        }
+
+        return true; // Si todo es válido
+    }
+
+    // Función para ejecutar la conversión
     function calcular() {
         const valorP = parseFloat(document.getElementById('valorP').value); // Total Píxeles (N)
         const valorParcial = parseFloat(document.getElementById('valorParcial').value); // Píxeles parciales (a)
 
-        // Validar si los valores son números
-        if (isNaN(valorP) || isNaN(valorParcial)) {
-            document.getElementById('resultado').innerText = "Por favor, ingresa valores válidos.";
-            return;
+        // Validar los valores
+        if (!validarValores(valorP, valorParcial)) {
+            return; // Si la validación falla, salir de la función
         }
 
         // Calcular el porcentaje (X) = (Píxeles Parciales (a) * 100) / Total Píxeles (N)
@@ -98,11 +114,12 @@
         document.getElementById('resultadoPorcentaje').value = resultado.toFixed(2); // Mostrar el resultado en el input correspondiente
     }
 
-    //Funcion para borrar
-    function limpiar(){
+    // Función para borrar
+    function limpiar() {
         document.getElementById('valorP').value = null;
         document.getElementById('valorParcial').value = null;
         document.getElementById('resultadoPorcentaje').value = "X%";
+        document.getElementById('resultado').innerText = null;
     }
 </script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
