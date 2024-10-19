@@ -49,7 +49,7 @@
     
     <div class="row regla">
         <div class="col">
-            <input type="number" class="form-control cuadro" id="valorP" placeholder="Píxeles (a)" required>
+            <input type="number" class="form-control cuadro" id="valorP" placeholder="Total Píxeles (N)" required>
         </div>
         <div class="col flechas">
             <div class="flecha">→</div>
@@ -61,7 +61,7 @@
     
     <div class="row regla">
         <div class="col">
-            <input type="number" class="form-control cuadro" id="valorTotal" placeholder="Total Píxeles (N)" required>
+            <input type="number" class="form-control cuadro" id="valorParcial" placeholder="Píxeles Parciales (a)" required>
         </div>
         <div class="col flechas">
             <div class="flecha">→</div>
@@ -80,17 +80,17 @@
 
 <script>
     function calcular() {
-        const valorP = parseFloat(document.getElementById('valorP').value); // Píxeles (a)
-        const valorTotal = parseFloat(document.getElementById('valorTotal').value); // Total Píxeles (N)
+        const valorP = parseFloat(document.getElementById('valorP').value); // Total Píxeles (N)
+        const valorParcial = parseFloat(document.getElementById('valorParcial').value); // Píxeles parciales (a)
 
         // Validar si los valores son números
-        if (isNaN(valorP) || isNaN(valorTotal)) {
+        if (isNaN(valorP) || isNaN(valorParcial)) {
             document.getElementById('resultado').innerText = "Por favor, ingresa valores válidos.";
             return;
         }
 
-        // Calcular el porcentaje (X) = (Píxeles (a) * 100) / Total Píxeles (N)
-        const resultado = (valorP * 100) / valorTotal;
+        // Calcular el porcentaje (X) = (Píxeles Parciales (a) * 100) / Total Píxeles (N)
+        const resultado = (valorParcial * 100) / valorP;
 
         document.getElementById('resultado').innerText = `El porcentaje es: ${resultado.toFixed(2)}%`;
         document.getElementById('resultadoPorcentaje').value = resultado.toFixed(2); // Mostrar el resultado en el input correspondiente
