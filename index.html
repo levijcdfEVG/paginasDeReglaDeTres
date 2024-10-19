@@ -1,127 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <title>Calculadora de Píxeles a Porcentajes</title>
-    <style>
-        .regla {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .cuadro {
-            border: 1px solid #000;
-            width: 170px; /* Ajustar el ancho para mejor visibilidad */
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            margin: 0 10px;
-        }
-        .flechas {
-            display: inline-block;
-            margin: 0 5px;
-        }
-        .flecha {
-            font-size: 1.5em;
-        }
-        /* Ocultar flechas de los inputs de tipo number */
-        input[type=number] {
-            -moz-appearance: textfield; /* Firefox */
-        }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none; /* Chrome, Safari, Edge */
-            margin: 0;
-        }
-        /* Centrar los placeholders */
-        .form-control {
-            text-align: center; /* Centra el texto en los inputs */
-        }
-    </style>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <title>Calculadora de Píxeles a Porcentajes</title>
+        <style>
+            .regla {
+                text-align: center;
+                margin: 20px 0;
+            }
+            .cuadro {
+                border: 1px solid #000;
+                width: 170px; /* Ajustar el ancho para mejor visibilidad */
+                height: 30px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2em;
+                margin: 0 10px;
+            }
+            .flechas {
+                display: inline-block;
+                margin: 0 5px;
+            }
+            .flecha {
+                font-size: 1.5em;
+            }
+            /* Ocultar flechas de los inputs de tipo number */
+            input[type=number] {
+                -moz-appearance: textfield; /* Firefox */
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none; /* Chrome, Safari, Edge */
+                margin: 0;
+            }
+            /* Centrar los placeholders */
+            .form-control {
+                text-align: center; /* Centra el texto en los inputs */
+            }
+        </style>
+    </head>
+    <body>
 
-<div class="container mt-5">
-    <h1 class="text-center">Calculadora de Píxeles a Porcentajes</h1>
-    
-    <div class="row regla">
-        <div class="col">
-            <input type="number" class="form-control cuadro" id="valorP" placeholder="Total Píxeles (N)" required>
+        <div class="container mt-5">
+            <h1 class="text-center">Calculadora de Píxeles a Porcentajes</h1>
+            
+            <div class="row regla">
+                <div class="col">
+                    <input type="number" class="form-control cuadro" id="valorP" placeholder="Total Píxeles (N)" required>
+                </div>
+                <div class="col flechas">
+                    <div class="flecha">→</div>
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control cuadro" id="valorP100" placeholder="100%" disabled>
+                </div>
+            </div>
+            
+            <div class="row regla">
+                <div class="col">
+                    <input type="number" class="form-control cuadro" id="valorParcial" placeholder="Píxeles Parciales (a)" required>
+                </div>
+                <div class="col flechas">
+                    <div class="flecha">→</div>
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control cuadro" id="resultadoPorcentaje" placeholder="X%" disabled>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <button type="button" class="btn btn-primary" onclick="calcular()">Calcular</button>
+                <button type="button" class="btn btn-primary" onclick="limpiar()">Limpiar</button>
+            </div>
+            
+            <div id="resultado" class="mt-3 text-center"></div>
         </div>
-        <div class="col flechas">
-            <div class="flecha">→</div>
-        </div>
-        <div class="col">
-            <input type="number" class="form-control cuadro" id="valorP100" placeholder="100%" disabled>
-        </div>
-    </div>
-    
-    <div class="row regla">
-        <div class="col">
-            <input type="number" class="form-control cuadro" id="valorParcial" placeholder="Píxeles Parciales (a)" required>
-        </div>
-        <div class="col flechas">
-            <div class="flecha">→</div>
-        </div>
-        <div class="col">
-            <input type="number" class="form-control cuadro" id="resultadoPorcentaje" placeholder="X%" disabled>
-        </div>
-    </div>
 
-    <div class="text-center mt-3">
-        <button type="button" class="btn btn-primary" onclick="calcular()">Calcular</button>
-        <button type="button" class="btn btn-primary" onclick="limpiar()">Limpiar</button>
-    </div>
-    
-    <div id="resultado" class="mt-3 text-center"></div>
-</div>
+        <script>
+            // Función para validar si los valores son números
+            function validarNumeros(valorP, valorParcial) {
+                return !isNaN(valorP) && !isNaN(valorParcial);
+            }
 
-<script>
-    // Función para validar los valores
-    function validarValores(valorP, valorParcial) {
-        // Validar si los valores son números
-        if (isNaN(valorP) || isNaN(valorParcial)) {
-            document.getElementById('resultado').innerText = "Por favor, ingresa valores válidos.";
-            return false;
-        }
+            // Función para validar que los píxeles parciales no superen el total
+            function validarRango(valorP, valorParcial) {
+                return valorParcial <= valorP;
+            }
 
-        // Validación de mayor valor
-        if (valorParcial > valorP) {
-            document.getElementById('resultado').innerText = "No hagas una operación con píxeles parciales superiores al total.";
-            return false;
-        }
+            // Función para ejecutar la conversión
+            function calcular() {
+                const valorP = parseFloat(document.getElementById('valorP').value); // Total Píxeles (N)
+                const valorParcial = parseFloat(document.getElementById('valorParcial').value); // Píxeles parciales (a)
 
-        return true; // Si todo es válido
-    }
+                // Validar los valores
+                if (!validarNumeros(valorP, valorParcial)) {
+                    document.getElementById('resultado').innerText = "Por favor, ingresa valores válidos.";
+                    return;
+                }
 
-    // Función para ejecutar la conversión
-    function calcular() {
-        const valorP = parseFloat(document.getElementById('valorP').value); // Total Píxeles (N)
-        const valorParcial = parseFloat(document.getElementById('valorParcial').value); // Píxeles parciales (a)
+                if (!validarRango(valorP, valorParcial)) {
+                    document.getElementById('resultado').innerText = "No hagas una operación con píxeles parciales superiores al total.";
+                    return;
+                }
 
-        // Validar los valores
-        if (!validarValores(valorP, valorParcial)) {
-            return; // Si la validación falla, salir de la función
-        }
+                // Calcular el porcentaje (X) = (Píxeles Parciales (a) * 100) / Total Píxeles (N)
+                const resultado = (valorParcial * 100) / valorP;
 
-        // Calcular el porcentaje (X) = (Píxeles Parciales (a) * 100) / Total Píxeles (N)
-        const resultado = (valorParcial * 100) / valorP;
+                document.getElementById('resultado').innerText = `El porcentaje es: ${resultado.toFixed(2)}%`;
+                document.getElementById('resultadoPorcentaje').value = resultado.toFixed(2); // Mostrar el resultado en el input correspondiente
+            }
 
-        document.getElementById('resultado').innerText = `El porcentaje es: ${resultado.toFixed(2)}%`;
-        document.getElementById('resultadoPorcentaje').value = resultado.toFixed(2); // Mostrar el resultado en el input correspondiente
-    }
-
-    // Función para borrar
-    function limpiar() {
-        document.getElementById('valorP').value = null;
-        document.getElementById('valorParcial').value = null;
-        document.getElementById('resultadoPorcentaje').value = "X%";
-        document.getElementById('resultado').innerText = null;
-    }
-</script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-</body>
+            // Función para borrar
+            function limpiar() {
+                document.getElementById('valorP').value = null;
+                document.getElementById('valorParcial').value = null;
+                document.getElementById('resultadoPorcentaje').value = "X%";
+                document.getElementById('resultado').innerText = null;
+            }
+        </script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>
