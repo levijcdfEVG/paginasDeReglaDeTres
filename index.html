@@ -73,12 +73,14 @@
 
     <div class="text-center mt-3">
         <button type="button" class="btn btn-primary" onclick="calcular()">Calcular</button>
+        <button type="button" class="btn btn-primary" onclick="limpiar()">Limpiar</button>
     </div>
     
     <div id="resultado" class="mt-3 text-center"></div>
 </div>
 
 <script>
+    //Funcion para ejecutar la conversion
     function calcular() {
         const valorP = parseFloat(document.getElementById('valorP').value); // Total Píxeles (N)
         const valorParcial = parseFloat(document.getElementById('valorParcial').value); // Píxeles parciales (a)
@@ -94,6 +96,13 @@
 
         document.getElementById('resultado').innerText = `El porcentaje es: ${resultado.toFixed(2)}%`;
         document.getElementById('resultadoPorcentaje').value = resultado.toFixed(2); // Mostrar el resultado en el input correspondiente
+    }
+
+    //Funcion para borrar
+    function limpiar(){
+        document.getElementById('valorP').value = null;
+        document.getElementById('valorParcial').value = null;
+        document.getElementById('resultadoPorcentaje').value = "X%";
     }
 </script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
